@@ -1,2 +1,3 @@
-# gf-decoration
-a system by GO Frame
+# GoFrame Project
+
+https://goframe.org
