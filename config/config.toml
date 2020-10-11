@@ -19,10 +19,24 @@
 
 # Database.
 [database]
-    link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/test"
+    link  = "mysql:root:root@tcp(127.0.0.1:3306)/test"
     debug = true
     # Database logger.
     [database.logger]
         Path   = "/tmp/log/gf-app/sql"
         Level  = "all"
         Stdout = true
+# Redis数据库配置
+[redis]
+    default = "127.0.0.1:6379,yabo_bg"
+
+#jwt配置
+[gToken]
+    CacheMode = 2
+    CacheKey = "GToken:"
+    Timeout = 0
+    MaxRefresh = 0
+    TokenDelimiter="_"
+    EncryptKey = "koi29a83idakguqjq29asd9asd8a7jhq"
+    AuthFailMsg = "登录超时，请重新登录"
+    MultiLogin = true
