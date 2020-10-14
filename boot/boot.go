@@ -27,7 +27,7 @@ func initGToken() {
 		LogoutPath:       "/user/logout",
 		LogoutBeforeFunc: user_controller.Logout,
 		AuthPaths:        g.SliceStr{"/user", "/system"},
-		AuthExcludePaths: g.SliceStr{"/user/signup"},
+		AuthExcludePaths: g.SliceStr{"/user/signup", "/portal/*"},
 	}
 	base.GfToken.Start()
 }

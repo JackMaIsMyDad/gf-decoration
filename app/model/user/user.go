@@ -11,5 +11,5 @@ func GetUserById(id int64) (*Entity, error) {
 }
 
 func GetUserByName(username string) (*Entity, error) {
-	return Model.FindOne("username = ?", username)
+	return Model.FindOne("user_name = ?", username)
 }

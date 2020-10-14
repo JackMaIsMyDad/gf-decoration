@@ -35,7 +35,7 @@ base-url = ""
 #jwt配置
 [gToken]
     CacheMode = 2
-    Timeout = 60000
+    Timeout = 0
     MaxRefresh = 0
     TokenDelimiter="_"
     EncryptKey = "koi29a83idakguqjq29asd9asd8a7jhq"

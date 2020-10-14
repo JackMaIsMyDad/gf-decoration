@@ -1,7 +1,6 @@
 package user_service
 
 import (
-	"database/sql"
 	"errors"
 	"gf-decoration/app/model/user"
 	"gf-decoration/library/base"
@@ -11,8 +10,13 @@ import (
 	"github.com/gogf/gf/util/gconv"
 )
 
+type LoginRequest struct {
+	UserName string `p:"username" v:"required|length:6,30#请输入账号|账号长度为:min到:max位"`
+	Password string `p:"password" v:"required|length:6,30#请输入密码|密码长度不够"`
+}
+
 type SingUpRequest struct {
-	Username   string `p:"username" v:"required|length:6,30#请输入账号|账号长度为:min到:max位"`
+	UserName   string `p:"username" v:"required|length:6,30#请输入账号|账号长度为:min到:max位"`
 	Password   string `p:"password" v:"required|length:6,30#请输入密码|密码长度不够"`
 	Repassword string `p:"repassword" v:"required|length:6,30|same:password#请输入密码|密码长度不够|两次密码不一致"`
 }
@@ -31,18 +35,21 @@ func GetUserById(id int64) (*user.Entity, error) {
 }
 
 // 用户注册
-func SingUp(singupData *SingUpRequest) (sql.Result, error) {
+func SingUp(singupData *SingUpRequest) error {
 	salt := util.MD5(util.GetRandomString(8))
 	password, err := gmd5.Encrypt(singupData.Password + salt)
 	if err != nil {
-		return nil, errors.New("系统错误，请稍后再试")
+		return errors.New("系统错误，请稍后再试")
 	}
 	userEntity := user.Entity{
-		Username: singupData.Username,
+		UserName: singupData.UserName,
 		Password: password,
 		Salt:     salt,
 	}
-	return user.Model.Insert(userEntity)
+	if _, insertErr := user.Model.Insert(userEntity); insertErr != nil {
+		return errors.New("注册失败，请稍后再试")
+	}
+	return nil
 }
 
 // 获取缓存的用户信息

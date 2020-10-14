@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/os/glog"
 )
 
-func bindTouter() {
+func bindRouter() {
 	baseUrl := g.Config().GetString("base-url")
 	s := g.Server()
 	s.Group(baseUrl+"/user", func(g *ghttp.RouterGroup) {
@@ -15,10 +15,13 @@ func bindTouter() {
 		g.POST("/signup", ctlUser.SignUp)
 		g.GET("/info", ctlUser.Info)
 	})
+	s.Group(baseUrl+"/portal", func(g *ghttp.RouterGroup) {
+
+	})
 }
 
 func init() {
 	glog.Info("--------- router start -------------")
-	bindTouter()
+	bindRouter()
 	glog.Info("--------- router finish -------------")
 }

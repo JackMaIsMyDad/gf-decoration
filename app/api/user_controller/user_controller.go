@@ -12,11 +12,6 @@ import (
 
 type Controller struct{}
 
-type LoginRequest struct {
-	Username string `p:"username" v:"required|length:6,30#请输入账号|账号长度为:min到:max位"`
-	Password string `p:"password" v:"required|length:6,30#请输入密码|密码长度不够"`
-}
-
 // 用户注册
 func (c *Controller) SignUp(r *ghttp.Request) {
 	glog.Info("用户注册")
@@ -29,7 +24,7 @@ func (c *Controller) SignUp(r *ghttp.Request) {
 		}
 		response.JsonExit(r, 1, err.Error(), "")
 	}
-	_, sinErr := user_service.SingUp(singupData)
+	sinErr := user_service.SingUp(singupData)
 	if sinErr != nil {
 		response.JsonFail(r, sinErr.Error(), "")
 	}
@@ -38,7 +33,7 @@ func (c *Controller) SignUp(r *ghttp.Request) {
 
 // 用户登录
 func Login(r *ghttp.Request) (string, interface{}) {
-	var data *LoginRequest
+	var data *user_service.LoginRequest
 	if err := r.Parse(&data); err != nil {
 		if v, ok := err.(*gvalid.Error); ok {
 			glog.Error("error when valid username and password")
@@ -46,7 +41,7 @@ func Login(r *ghttp.Request) (string, interface{}) {
 		}
 		response.JsonFail(r, err.Error(), "")
 	}
-	userModel, err := user_service.GetUserByName(data.Username)
+	userModel, err := user_service.GetUserByName(data.UserName)
 	if err != nil {
 		response.JsonFail(r, "服务出错，请联系管理员", "")
 	}
@@ -64,10 +59,9 @@ func Login(r *ghttp.Request) (string, interface{}) {
 	}
 	sessionUser := bean.SessionUser{
 		Id:       userModel.Id,
-		Username: userModel.Username,
-		RealName: userModel.RealName,
+		UserName: userModel.UserName,
 	}
-	return data.Username, sessionUser
+	return data.UserName, sessionUser
 }
 
 // 用户登出
