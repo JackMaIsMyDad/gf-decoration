@@ -1,3 +1,5 @@
+base-url = ""
+
 # HTTP Server
 [server]
 	Address     = ":8199"
@@ -33,7 +35,6 @@
 #jwt配置
 [gToken]
     CacheMode = 2
-    CacheKey = "GToken:"
     Timeout = 0
     MaxRefresh = 0
     TokenDelimiter="_"

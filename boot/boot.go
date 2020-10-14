@@ -1,6 +1,8 @@
 package boot
 
 import (
+	"gf-decoration/app/api/user_controller"
+	"gf-decoration/library/base"
 	_ "gf-decoration/packed"
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/frame/g"
@@ -11,9 +13,9 @@ func init() {
 }
 
 func initGToken() {
-	AdminGfToken = &gtoken.GfToken{
-		CacheMode:        g.Cfg().GetInt8("gToken.CacheMode"),
-		CacheKey:         g.Cfg().GetString("gToken.CacheKey"),
+	base.GfToken = &gtoken.GfToken{
+		CacheMode: g.Cfg().GetInt8("gToken.CacheMode"),
+		//CacheKey:         g.Cfg().GetString("gToken.CacheKey"),
 		Timeout:          g.Cfg().GetInt("gToken.Timeout"),
 		MaxRefresh:       g.Cfg().GetInt("gToken.MaxRefresh"),
 		TokenDelimiter:   g.Cfg().GetString("gToken.TokenDelimiter"),
@@ -21,10 +23,11 @@ func initGToken() {
 		AuthFailMsg:      g.Cfg().GetString("gToken.AuthFailMsg"),
 		MultiLogin:       g.Cfg().GetBool("gToken.MultiLogin"),
 		LoginPath:        "/login",
-		LoginBeforeFunc:  service.AdminLogin,
+		LoginBeforeFunc:  user_controller.Login,
 		LogoutPath:       "/user/logout",
-		AuthPaths:        g.SliceStr{"/user/*"},
-		AuthExcludePaths: g.SliceStr{"login"},
+		LogoutBeforeFunc: user_controller.Logout,
+		AuthPaths:        g.SliceStr{"/user", "/system"},
+		AuthExcludePaths: g.SliceStr{"/user/signup"},
 	}
-	AdminGfToken.Start()
+	base.GfToken.Start()
 }
