@@ -4,6 +4,12 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+const (
+	SUCCESS = 0
+	FAIL    = -1
+	ERROR   = -99
+)
+
 // 数据返回通用JSON数据结构
 type JsonResponse struct {
 	Code    int         `json:"code"`    // 错误码((0:成功, 1:失败, >1:错误码))
@@ -32,12 +38,18 @@ func JsonExit(r *ghttp.Request, err int, msg string, data ...interface{}) {
 
 // 成功返回
 func JsonSucc(r *ghttp.Request, msg string, data ...interface{}) {
-	Json(r, 0, msg, data...)
+	Json(r, SUCCESS, msg, data...)
 	r.Exit()
 }
 
 // 失败返回
 func JsonFail(r *ghttp.Request, msg string, data ...interface{}) {
-	Json(r, 1, msg, data...)
+	Json(r, FAIL, msg, data...)
+	r.Exit()
+}
+
+// 返回错误
+func JsonError(r *ghttp.Request, msg string, data ...interface{}) {
+	Json(r, ERROR, msg, data...)
 	r.Exit()
 }

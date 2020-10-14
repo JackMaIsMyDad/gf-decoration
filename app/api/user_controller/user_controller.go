@@ -42,25 +42,25 @@ func Login(r *ghttp.Request) (string, interface{}) {
 	if err := r.Parse(&data); err != nil {
 		if v, ok := err.(*gvalid.Error); ok {
 			glog.Error("error when valid username and password")
-			response.JsonExit(r, 1, v.FirstString(), "")
+			response.JsonFail(r, v.FirstString(), "")
 		}
-		response.JsonExit(r, 1, err.Error(), "")
+		response.JsonFail(r, err.Error(), "")
 	}
 	userModel, err := user_service.GetUserByName(data.Username)
 	if err != nil {
-		response.JsonExit(r, 1, "服务出错，请联系管理员", "")
+		response.JsonFail(r, "服务出错，请联系管理员", "")
 	}
 	if userModel == nil {
-		response.JsonExit(r, 1, "没有找到该用户", "")
+		response.JsonFail(r, "没有找到该用户", "")
 	}
 	glog.Info(userModel.Salt + "---" + data.Password)
 	reqPassword, encErr := gmd5.Encrypt(data.Password + userModel.Salt)
 	if encErr != nil {
-		glog.Error(encErr)
-		response.JsonExit(r, 1, "用户名或密码错误")
+		glog.Error(encErr.Error())
+		response.JsonFail(r, "用户名或密码错误", "")
 	}
 	if reqPassword != userModel.Password {
-		response.JsonExit(r, 1, "用户名或密码错误", "")
+		response.JsonFail(r, "用户名或密码错误", "")
 	}
 	sessionUser := bean.SessionUser{
 		Id:       userModel.Id,
@@ -80,7 +80,6 @@ func Logout(r *ghttp.Request) bool {
 	} else if userInfo.Id != userId {
 		response.JsonFail(r, "登出用户不存在", "")
 	}
-	glog.Info("登出 返回true")
 	return true
 }
 
@@ -89,12 +88,12 @@ func (c *Controller) Info(r *ghttp.Request) {
 	id := user_service.GetLoginUserId(r)
 	userInfo, err := user_service.GetUserById(id)
 	if err != nil {
-		response.JsonExit(r, 1, err.Error(), "")
+		response.JsonFail(r, err.Error(), "")
 	}
 	if userInfo != nil {
 		userInfo.Password = ""
 		userInfo.Salt = ""
-		response.JsonExit(r, 0, "", userInfo)
+		response.JsonSucc(r, "获取用户信息成功", userInfo)
 	}
-	response.JsonExit(r, 1, "未找到用户")
+	response.JsonFail(r, "未找到用户", "")
 }
