@@ -85,9 +85,20 @@ func (c *Controller) Info(r *ghttp.Request) {
 		response.JsonFail(r, err.Error(), "")
 	}
 	if userInfo != nil {
-		userInfo.Password = ""
-		userInfo.Salt = ""
-		response.JsonSucc(r, "获取用户信息成功", userInfo)
+		info := struct {
+			UserName     string `json:"user_name"`
+			Mobile       string `json:"mobile"`
+			UserNickName string `json:"user_nick_name"`
+			Avatar       string `json:"avatar"`
+			Sex          int    `json:"sex"`
+		}{
+			UserName:     userInfo.UserName,
+			Mobile:       userInfo.Mobile,
+			UserNickName: userInfo.UserNickname,
+			Avatar:       userInfo.Avatar,
+			Sex:          userInfo.Sex,
+		}
+		response.JsonSucc(r, "获取用户信息成功", &info)
 	}
 	response.JsonFail(r, "未找到用户", "")
 }
