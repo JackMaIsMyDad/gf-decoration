@@ -36,6 +36,13 @@ func GetUserById(id int64) (*user.Entity, error) {
 
 // 用户注册
 func SingUp(singupData *SingUpRequest) error {
+	userModel, findErr := GetUserByName(singupData.UserName)
+	if findErr != nil {
+		return errors.New("注册失败，请稍后再试")
+	}
+	if userModel != nil {
+		return errors.New("该用户名已被占用，请更换后再试")
+	}
 	salt := util.MD5(util.GetRandomString(8))
 	password, err := gmd5.Encrypt(singupData.Password + salt)
 	if err != nil {

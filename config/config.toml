@@ -30,7 +30,7 @@ base-url = ""
         Stdout = true
 # Redis数据库配置
 [redis]
-    default = "127.0.0.1:6379,root"
+    default = "127.0.0.1:6378,root"
 
 #jwt配置
 [gToken]

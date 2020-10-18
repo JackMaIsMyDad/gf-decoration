@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 18/10/2020 11:45:59
+ Date: 18/10/2020 12:17:59
 */
 
 SET NAMES utf8mb4;
@@ -40,8 +40,8 @@ CREATE TABLE `user`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '备注',
   `is_admin` tinyint(4) NULL DEFAULT 1 COMMENT '是否后台管理员 1 是  0   否',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `user_login`(`user_name`) USING BTREE,
-  INDEX `user_nickname`(`user_nickname`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+  INDEX `user_nickname`(`user_nickname`) USING BTREE,
+  UNIQUE INDEX `user_name`(`user_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
