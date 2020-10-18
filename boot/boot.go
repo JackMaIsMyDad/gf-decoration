@@ -22,12 +22,12 @@ func initGToken() {
 		EncryptKey:       g.Cfg().GetBytes("gToken.EncryptKey"),
 		AuthFailMsg:      g.Cfg().GetString("gToken.AuthFailMsg"),
 		MultiLogin:       g.Cfg().GetBool("gToken.MultiLogin"),
-		LoginPath:        "/login",
+		LoginPath:        "/api/login",
 		LoginBeforeFunc:  user_controller.Login,
-		LogoutPath:       "/user/logout",
+		LogoutPath:       "/api/user/logout",
 		LogoutBeforeFunc: user_controller.Logout,
-		AuthPaths:        g.SliceStr{"/user", "/system"},
-		AuthExcludePaths: g.SliceStr{"/user/signup", "/portal/*"},
+		AuthPaths:        g.SliceStr{"/api"},
+		AuthExcludePaths: g.SliceStr{"/api/login", "/api/user/signup", "/api/portal/*"},
 	}
 	base.GfToken.Start()
 }

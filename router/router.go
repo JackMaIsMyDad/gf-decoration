@@ -10,13 +10,15 @@ import (
 func bindRouter() {
 	baseUrl := g.Config().GetString("base-url")
 	s := g.Server()
-	s.Group(baseUrl+"/user", func(g *ghttp.RouterGroup) {
-		ctlUser := new(user_controller.Controller)
-		g.POST("/signup", ctlUser.SignUp)
-		g.GET("/info", ctlUser.Info)
-	})
-	s.Group(baseUrl+"/portal", func(g *ghttp.RouterGroup) {
+	s.Group(baseUrl+"/api", func(g *ghttp.RouterGroup) {
+		g.Group("/user", func(g *ghttp.RouterGroup) {
+			ctlUser := new(user_controller.Controller)
+			g.POST("/signup", ctlUser.SignUp)
+			g.GET("/info", ctlUser.Info)
+		})
+		g.Group("/portal", func(g *ghttp.RouterGroup) {
 
+		})
 	})
 }
 
