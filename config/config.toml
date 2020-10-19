@@ -21,7 +21,7 @@ base-url = ""
 
 # Database.
 [database]
-    link  = "mysql:root:root@tcp(127.0.0.1:3307)/test"
+    link  = "mysql:root:root@tcp(127.0.0.1:3306)/test"
     debug = true
     # Database logger.
     [database.logger]
@@ -30,7 +30,7 @@ base-url = ""
         Stdout = true
 # Redis数据库配置
 [redis]
-    default = "127.0.0.1:6378,root"
+    default = "127.0.0.1:6379,root"
 
 #jwt配置
 [gToken]
